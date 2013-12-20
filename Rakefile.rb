@@ -37,7 +37,7 @@ namespace :compile do
     File.open('compiled_assets/javascripts/application.js', 'w') { |f| f.write(javascript) }
 
     puts color "Writing application.css.scss"
-    File.open('compiled_assets/stylesheets/application.css.scss', 'w') { |f| f.write(stylesheet) }
+    File.open('compiled_assets/stylesheets/application.css', 'w') { |f| f.write(stylesheet) }
   end
 end
 
