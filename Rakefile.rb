@@ -8,7 +8,7 @@ def color(str)
   "\033[32m#{str}\033[0m"
 end
 
-task :default => ["assets:reset_compiled", "compile:compass", "compile:sprockets", "assets:copy"]
+task :default => ["assets:reset_compiled", "compile:compass", "compile:sprockets", "assets:copy", "assets:change_paths"]
 
 namespace :compile do
   task :compass do
@@ -71,4 +71,17 @@ namespace :assets do
     puts color "Copying image assets to compiled_assets/"
     FileUtils.cp_r(Dir["#{origin}images/**"],"#{target}images")
   end
+
+  ## This changes the path from "/images" and "/fonts" to "../images" and "../fonts" for non-sprited(non-compiled) images and fonts in the css.
+  task :change_paths do
+    puts color "Converting font and image paths"
+    filepath = "compiled_assets/stylesheets/application.css"
+    css = File.read(filepath)
+    css = css.gsub(/url\("\/images/, "url(\"../images")
+    css = css.gsub(/url\('\/images/, "url(\'../images")
+    css = css.gsub(/url\('\/fonts/, "url(\'../fonts")
+    css = css.gsub(/url\("\/fonts/, "url(\"../fonts")
+    File.open(filepath, "w").write(css)
+  end
+
 end
